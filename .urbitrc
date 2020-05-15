@@ -1,5 +1,5 @@
 module.exports = {
   URBIT_PIERS: [
-    "/run/media/gus/5d3cdd7f-1c00-4989-a0e8-602d6c647145/gus/Source/URBIT/harren-hactyd/flanbox",
+    "/home/gus/Source/URBIT/aargh/blarg",
   ]
 };

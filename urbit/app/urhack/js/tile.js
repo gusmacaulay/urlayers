@@ -19255,7 +19255,7 @@
             }.call(commonjsGlobal));
             });
 
-            const _jsxFileName = "/run/media/gus/5d3cdd7f-1c00-4989-a0e8-602d6c647145/gus/Source/URBIT/HACKATHON/urhack/tile/tile.js";
+            const _jsxFileName = "/home/gus/Source/URBIT/HACKATHON/urlayers/tile/tile.js";
 
             class urhackTile extends react_1 {
 
