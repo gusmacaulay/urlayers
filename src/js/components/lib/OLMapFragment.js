@@ -37,9 +37,10 @@ import {
 import {defaults as defaultInteractions, DragRotateAndZoom} from 'ol/interaction';
 import {
     Style,
-    Fill as FillStyle,
-    RegularShape as RegularShapeStyle,
-    Stroke as StrokeStyle
+    Fill,
+    RegularShape as RegularShape,
+    Stroke as Stroke,
+    Circle as CircleStyle
 } from 'ol/style'
 
 import {
@@ -47,7 +48,8 @@ import {
     get as getProjection
  } from 'ol/proj'
  import Polygon from 'ol/geom/Polygon';
- import Draw, {createRegularPolygon, createBox} from 'ol/interaction/Draw';
+ //import Draw, {createRegularPolygon, createBox} from 'ol/interaction/Draw';
+ import {Draw, Modify, Snap} from 'ol/interaction';
 //import 'ol/ol.css'
 // End Openlayers imports
 
@@ -57,7 +59,7 @@ class OLMapFragment extends React.Component {
         this.updateDimensions = this.updateDimensions.bind(this)
     }
     updateDimensions(){
-        const h = window.innerWidth >= 992 ? window.innerHeight : 400
+        const h = window.innerWidth >= 992 ? (window.innerHeight - 250) : 400
         this.setState({height: h})
     }
     componentWillMount(){
@@ -65,7 +67,43 @@ class OLMapFragment extends React.Component {
         this.updateDimensions()
     }
     componentDidMount(){
-        // Create an Openlayer Map instance with two tile layers
+        // Openlayer Map instance with openstreetmap base and vector edit layer
+
+        var source = new VectorSource();
+        var vector = new VectorLayer({
+          source: source,
+          style: new Style({
+            fill: new Fill({
+              color: 'rgba(255, 255, 255, 0.2)'
+            }),
+            stroke: new Stroke({
+              color: '#ffcc33',
+              width: 2
+            }),
+            image: new CircleStyle({
+              radius: 7,
+              fill: new Fill({
+                color: '#ffcc33'
+              })
+            })
+          })
+        });
+        const drawMcdrawFace =  new Draw({
+           source: source,
+           type: 'Polygon',
+         });
+         drawMcdrawFace.on('drawend', function (event) {
+          var feature = event.feature;
+          var features = vector.getSource().getFeatures();
+          features = features.concat(feature);
+          features.forEach(function() {
+          var format = new GeoJSON();
+          var routeFeatures = format.writeFeatures(features);
+          //alert(routeFeatures);
+          api.action('urhack','json',routeFeatures);
+            });
+          });
+
         const map = new Map({
             //  Display the map in the div with the id of map
             target: 'map',
@@ -76,17 +114,7 @@ class OLMapFragment extends React.Component {
                         projection: 'EPSG:3857'
                     })
                 }),
-                new TileLayer({
-                    source: new TileWMSSource({
-                        url: 'https://ahocevar.com/geoserver/wms',
-                        params: {
-                            layers: 'topp:states',
-                            'TILED': true,
-                        },
-                        projection: 'EPSG:4326'
-                    }),
-                    name: 'USA'
-                }),
+                vector,
             ],
             // Add in the following map controls
             controls: DefaultControls().extend([
@@ -97,7 +125,10 @@ class OLMapFragment extends React.Component {
                 //new DefaultControls()
             ]),
              interactions: defaultInteractions().extend([
-               new DragRotateAndZoom()
+               new DragRotateAndZoom(),
+               drawMcdrawFace,
+               new Modify({source: source}),
+               new Snap({source: source}),
             ]),
             // Render the tile layers in a map view with a Mercator projection
             view: new View({
@@ -106,6 +137,9 @@ class OLMapFragment extends React.Component {
                 zoom: 2
             })
         })
+    //    var allFeatures = source.getFeatures();
+    //    var format = new GeoJSON();
+//      var routeFeatures = format.writeFeatures(allFeatures);
     }
     componentWillUnmount(){
         window.removeEventListener('resize', this.updateDimensions)

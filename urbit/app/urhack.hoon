@@ -38,7 +38,8 @@
 +$  versioned-state
   $%  state-zero
   ==
-+$  state-zero  [%0 data=json time=@da location=@t timer=(unit @da)]
++$  state-zero  [%0 data=json]
+::+$  state-zero  [%0 data=json time=@da location=@t timer=(unit @da)]
 --
 =|  state-zero
 =*  state  -
@@ -63,7 +64,7 @@
   ++  on-poke
     |=  [=mark =vase]
     ^-  (quip card _this)
-    ~&  'blah'
+    ~&  'pokey poke!'
     =^  cards  state
       ?+    mark  (on-poke:def mark vase)
           %json
@@ -95,7 +96,8 @@
       (on-arvo:def wire sign-arvo)
     [~ this]
   ::
-  ++  on-save  on-save:def
+  ::++  on-save  on-save:def
+  ++  on-save  !>(state)
   ++  on-load  on-load:def
   ++  on-leave  on-leave:def
   ++  on-peek   on-peek:def
@@ -108,54 +110,18 @@
 ++  poke-json
   |=  jon=json
   ^-  (quip card _state)
-  ~&  'jokey pokey!'
+  ~&  'json pokey!'
   ?.  ?=(%s -.jon)
     [~ state]
   =/  str=@t  +.jon
-  =/  req=request:http  (request-darksky str)
-  =/  out  *outbound-config:iris
-  =/  lismov  [%pass /[(scot %da now.bol)] %arvo %i %request req out]~
-  ?~  timer
-    :-  [[%pass /timer %arvo %b %wait (add now.bol ~h3)] lismov]
-    %=  state
-      location  str
-      timer    `(add now.bol ~h3)
-    ==
-  [lismov state(location str)]
-::
-++  request-darksky
-  |=  location=@t
-  ^-  request:http
-  =/  base  'https://api.darksky.net/forecast/634639c10670c7376dc66b6692fe57ca/'
-  =/  url=@t  (cat 3 (cat 3 base location) '?units=auto')
-  =/  hed  [['Accept' 'application/json']]~
-  [%'GET' url hed *(unit octs)]
+  ~&  jon
+  [~ state]
 ::
 ++  http-response
   |=  [=wire response=client-response:iris]
   ^-  (quip card _state)
   ::  ignore all but %finished
-  ?.  ?=(%finished -.response)
-    [~ state]
-  =/  data=(unit mime-data:iris)  full-file.response
-  ?~  data
-    :: data is null
-    [~ state]
-  =/  ujon=(unit json)  (de-json:html q.data.u.data)
-  ?~  ujon
-     [~ state]
-  ?>  ?=(%o -.u.ujon)
-  ?:  (gth 200 status-code.response-header.response)
-    [~ state]
-  =/  jon=json  %-  pairs:enjs:format  :~
-    currently+(~(got by p.u.ujon) 'currently')
-    daily+(~(got by p.u.ujon) 'daily')
-  ==
-  :-  [%give %fact ~[/weathertile] %json !>(jon)]~
-  %=  state
-    data  jon
-    time  now.bol
-  ==
+  [~ state]
 ::
 ++  poke-handle-http-request
   |=  =inbound-request:eyre
@@ -175,18 +141,5 @@
   ::
       [%'~urhack' *]  (html-response:gen index)
   ==
-::
-++  wake
-  |=  [wir=wire err=(unit tang)]
-  ^-  (quip card _state)
-  ?~  err
-    =/  req/request:http  (request-darksky location)
-    =/  out  *outbound-config:iris
-    :_  state(timer `(add now.bol ~h3))
-    :~  [%pass /[(scot %da now.bol)] %arvo %i %request req out]
-        [%pass /timer %arvo %b %wait (add now.bol ~h3)]
-    ==
-  %-  (slog u.err)
-  [~ state]
 ::
 --
