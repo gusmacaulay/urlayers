@@ -160,25 +160,21 @@
 ++  poke-handle-http-request
   |=  =inbound-request:eyre
   ^-  simple-payload:http
+  =+  url=(parse-request-line url.request.inbound-request)
+  ?+  site.url  not-found:gen
+      [%'~urhack' %css %index ~]  (css-response:gen style)
+      [%'~urhack' %js %tile ~]    (js-response:gen tile-js)
+      [%'~urhack' %js %index ~]   (js-response:gen script)
   ::
-  =/  request-line  (parse-request-line url.request.inbound-request)
-  =/  back-path  (flop site.request-line)
-  =/  name=@t
-    =/  back-path  (flop site.request-line)
-    ?~  back-path
-      ''
-    i.back-path
+      [%'~urhack' %img @t *]
+    =/  name=@t  i.t.t.site.url
+    =/  img  (~(get by urhack-png) name)
+    ?~  img
+      not-found:gen
+    (png-response:gen (as-octs:mimes:html u.img))
   ::
-  ?~  back-path
-    not-found:gen
-  ?:  =(name 'tile')
-    (js-response:gen tile-js)
-  ?:  (lte (lent back-path) 1)
-    not-found:gen
-  ?:  =(&2:site.request-line 'img')
-    =/  img  (as-octs:mimes:html (~(got by urhack-png) `@ta`name))
-    (png-response:gen img)
-  not-found:gen
+      [%'~urhack' *]  (html-response:gen index)
+  ==
 ::
 ++  wake
   |=  [wir=wire err=(unit tang)]
