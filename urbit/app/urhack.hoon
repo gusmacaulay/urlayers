@@ -114,18 +114,27 @@
   ?.  ?=(%s -.jon)
     [~ state]
   =/  str=@t  +.jon
-  ~&  jon
-  [~ state]
+  ::~&  data.state
+  ~&  'give it to me baby!'
+  :-  [%give %fact ~[/urhack] %json !>(jon)]~
+  %=  state
+    data  jon
+  ==
+::  [~ state]
 ::
-++  http-response
-  |=  [=wire response=client-response:iris]
-  ^-  (quip card _state)
-  ::  ignore all but %finished
-  [~ state]
+::++  http-response
+::  |=  [=wire response=client-response:iris]
+::  ^-  (quip card _state)
+::  ~&  'show me state!'
+::  ~&  data.state
+::  ::  ignore all but %finished
+::  [~ state]
 ::
 ++  poke-handle-http-request
   |=  =inbound-request:eyre
   ^-  simple-payload:http
+  ~&  'show me state!'
+  ~&  data.state
   =+  url=(parse-request-line url.request.inbound-request)
   ?+  site.url  not-found:gen
       [%'~urhack' %css %index ~]  (css-response:gen style)

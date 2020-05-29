@@ -88,6 +88,8 @@ class OLMapFragment extends React.Component {
             })
           })
         });
+        const data = this.props.data || {};
+        alert(JSON.stringify(data));
         const drawMcdrawFace =  new Draw({
            source: source,
            type: 'Polygon',
@@ -100,6 +102,8 @@ class OLMapFragment extends React.Component {
           var format = new GeoJSON();
           var routeFeatures = format.writeFeatures(features);
           //alert(routeFeatures);
+
+
           api.action('urhack','json',routeFeatures);
             });
           });

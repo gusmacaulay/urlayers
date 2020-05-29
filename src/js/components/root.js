@@ -20,8 +20,8 @@ export class Root extends Component {
         <Route exact path="/~urhack" render={ () => {
           return (
             <div className="cf w-100 flex flex-column pa4 ba-m ba-l ba-xl b--gray2 br1 h-100 h-100-minus-40-s h-100-minus-40-m h-100-minus-40-l h-100-minus-40-xl f9 white-d overflow-x-hidden">
-              <h1 className="mt0 f8 fw4">urhack</h1>
-              <p className="lh-copy measure pt3">Welcome to your Flanscape application.</p>
+              <h1 className="mt0 f8 fw4">urlayers</h1>
+              <p className="lh-copy measure pt3">Welcome urlayers.  Click the map to draw a polygon.  Hold shift to freehand draw</p>
 
       <OLMapFragment />
               </div>
