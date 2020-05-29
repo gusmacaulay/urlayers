@@ -8,7 +8,7 @@ urlayers is an openlayers integration and geojson datastore for urbit. Built wit
 ## Features
 
 * openlayers client 
-* geojson storage ...work in progress
+* geojson storage ...work in progress, now a memory leak!?
 * versioning ... wishlist
 * data sharing ... wishlist
 
@@ -20,6 +20,10 @@ Based on create-landscape-app, so;
 * npm run build
 * |commit %desk
 * |start %urhack
+
+## Usage
+
+Draw geojson features, reload the page until you bail meme ... enjoy!
 
 ## About/Motivation
 
