@@ -88,8 +88,8 @@ class OLMapFragment extends React.Component {
             })
           })
         });
-        const data = this.props.data || {};
-        alert(JSON.stringify(data));
+      //  const data = this.props.data || {};
+      //  alert(JSON.stringify(data));
         const drawMcdrawFace =  new Draw({
            source: source,
            type: 'Polygon',
