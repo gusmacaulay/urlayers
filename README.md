@@ -16,6 +16,7 @@ urlayers is an openlayers integration and geojson datastore for urbit. Built wit
 
 Based on create-landscape-app, so;
 
+* npm install
 * edit the .urbitrc file to point at your ship
 * npm run build
 * |commit %desk
