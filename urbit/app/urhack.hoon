@@ -96,8 +96,7 @@
       (on-arvo:def wire sign-arvo)
     [~ this]
   ::
-  ::++  on-save  on-save:def
-  ++  on-save  !>(state)
+  ++  on-save  on-save:def
   ++  on-load  on-load:def
   ++  on-leave  on-leave:def
   ++  on-peek   on-peek:def
@@ -110,31 +109,17 @@
 ++  poke-json
   |=  jon=json
   ^-  (quip card _state)
-  ~&  'json pokey!'
-  ?.  ?=(%s -.jon)
-    [~ state]
-  =/  str=@t  +.jon
-  ::~&  data.state
   ~&  'give it to me baby!'
   :-  [%give %fact ~[/urhack] %json !>(jon)]~
   %=  state
     data  jon
   ==
-::  [~ state]
-::
-::++  http-response
-::  |=  [=wire response=client-response:iris]
-::  ^-  (quip card _state)
-::  ~&  'show me state!'
-::  ~&  data.state
-::  ::  ignore all but %finished
-::  [~ state]
 ::
 ++  poke-handle-http-request
   |=  =inbound-request:eyre
   ^-  simple-payload:http
   ~&  'show me state!'
-  ~&  data.state
+  ~&  (en-json:html data.state)
   =+  url=(parse-request-line url.request.inbound-request)
   ?+  site.url  not-found:gen
       [%'~urhack' %css %index ~]  (css-response:gen style)
