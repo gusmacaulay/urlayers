@@ -64,7 +64,6 @@
   ++  on-poke
     |=  [=mark =vase]
     ^-  (quip card _this)
-    ~&  'pokey poke!'
     =^  cards  state
       ?+    mark  (on-poke:def mark vase)
           %json
@@ -78,14 +77,36 @@
       ==
     [cards this]
   ::
+::  ++  on-watch
+::    |=  =path
+::    ^-  (quip card:agent:gall _this)
+::    ~&  'watching, waiting, co-mis er ating no ``'
+::    ?:  ?=([%http-response *] path)
+::      [~ this]
+::      ::`this
+::  ?.  =(/ path)
+::      (on-watch:def path)
+::    ~&  'give nothing watch?'
+::    `this
+
+  ::  =/  =json
+  ::  [[%give %fact ~ %json !>(*json)]~ this]
+  ::
   ++  on-watch
     |=  =path
-    ^-  (quip card:agent:gall _this)
+    ^-  (quip card _this)
+    ~&  'the simplest on-watch'
+    ~&  path
     ?:  ?=([%http-response *] path)
-      `this
+      [~ this]
     ?.  =(/ path)
-      (on-watch:def path)
-    [[%give %fact ~ %json !>(*json)]~ this]
+    ::  (on-watch:def path)
+      ~&  '/ on-watch'
+    ::  ~&  (en-json:html data.state)
+      :_  this
+      [%give %fact ~ %json !>(data)]~
+      ::[[%give %fact ~ %json !>(*json)]~ this]
+    (on-watch:def path)
   ::
   ++  on-agent  on-agent:def
   ::
@@ -118,13 +139,12 @@
 ++  poke-handle-http-request
   |=  =inbound-request:eyre
   ^-  simple-payload:http
-  ~&  'show me state!'
-  ~&  (en-json:html data.state)
   =+  url=(parse-request-line url.request.inbound-request)
   ?+  site.url  not-found:gen
       [%'~urhack' %css %index ~]  (css-response:gen style)
       [%'~urhack' %js %tile ~]    (js-response:gen tile-js)
       [%'~urhack' %js %index ~]   (js-response:gen script)
+  ::    [%'~urhack' %data %geo ~] (en-json:html data.state)
   ::
       [%'~urhack' %img @t *]
     =/  name=@t  i.t.t.site.url

@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from "react-router-dom";
 import _ from 'lodash';
 import { HeaderBar } from "./lib/header-bar.js"
-
 import OLMapFragment from './lib/OLMapFragment.js'
-
 
 export class Root extends Component {
   constructor(props) {
@@ -12,7 +10,6 @@ export class Root extends Component {
   }
 
   render() {
-
     return (
       <BrowserRouter>
         <div className="absolute h-100 w-100 bg-gray0-d ph4-m ph4-l ph4-xl pb4-m pb4-l pb4-xl">

@@ -58,53 +58,58 @@ class OLMapFragment extends React.Component {
         super(props)
         this.updateDimensions = this.updateDimensions.bind(this)
     }
+
+    handleEvent(diff) {
+      console.log('OL handle: ', diff);
+    }
     updateDimensions(){
         const h = window.innerWidth >= 992 ? (window.innerHeight - 250) : 400
         this.setState({height: h})
     }
     componentWillMount(){
         window.addEventListener('resize', this.updateDimensions)
-        this.updateDimensions()
+        this.updateDimensions();
     }
     componentDidMount(){
         // Openlayer Map instance with openstreetmap base and vector edit layer
+       var source = new VectorSource();
+       var vector = new VectorLayer({
+         source: source,
+         style: new Style({
+           fill: new Fill({
+             color: 'rgba(255, 255, 255, 0.2)'
+           }),
+           stroke: new Stroke({
+             color: '#ffcc33',
+             width: 2
+           }),
+           image: new CircleStyle({
+             radius: 7,
+             fill: new Fill({
+               color: '#ffcc33'
+             })
+           })
+         })
+         });
 
-        var source = new VectorSource();
-        var vector = new VectorLayer({
-          source: source,
-          style: new Style({
-            fill: new Fill({
-              color: 'rgba(255, 255, 255, 0.2)'
-            }),
-            stroke: new Stroke({
-              color: '#ffcc33',
-              width: 2
-            }),
-            image: new CircleStyle({
-              radius: 7,
-              fill: new Fill({
-                color: '#ffcc33'
-              })
-            })
-          })
-        });
-      //  const data = this.props.data || {};
-      //  alert(JSON.stringify(data));
+    //    const data = store.state || {blah:"cheese"};
+    //    alert('data? ' + JSON.stringify(data));
+    //      alert('data? ' + JSON.stringify(this.data));
+    //    console.log('got data? :', store.state);
+
         const drawMcdrawFace =  new Draw({
            source: source,
            type: 'Polygon',
          });
          drawMcdrawFace.on('drawend', function (event) {
+           console.log('draw state',window.store.state);
           var feature = event.feature;
           var features = vector.getSource().getFeatures();
           features = features.concat(feature);
           features.forEach(function() {
-          var format = new GeoJSON();
-          var routeFeatures = format.writeFeatures(features);
-          //alert(routeFeatures);
-
-
-          api.action('urhack','json',routeFeatures);
+            var format = new GeoJSON();
+            var routeFeatures = format.writeFeatures(features);
+            api.action('urhack','json',routeFeatures);
             });
           });
 
@@ -141,7 +146,15 @@ class OLMapFragment extends React.Component {
                 zoom: 2
             })
         })
-    //    var allFeatures = source.getFeatures();
+        map.once('rendercomplete', function(event) {
+          let features = store.state;
+          var format = new GeoJSON();
+          var urFeatures = format.readFeatures(features);
+          vector.getSource().addFeatures(urFeatures);
+          console.log('post render state',store.state);
+       });
+
+  //    var allFeatures = source.getFeatures();
     //    var format = new GeoJSON();
 //      var routeFeatures = format.writeFeatures(allFeatures);
     }
@@ -149,6 +162,10 @@ class OLMapFragment extends React.Component {
         window.removeEventListener('resize', this.updateDimensions)
     }
     render(){
+  //    const data = this.props.data || {};
+  //    console.log('got data? :', data);
+  //    this.setState({data : data});
+
         const style = {
             width: '100%',
             height:this.state.height,

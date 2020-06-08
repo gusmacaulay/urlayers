@@ -16,9 +16,11 @@ class Store {
 
         this.initialReducer = new InitialReducer();
         this.updateReducer = new UpdateReducer();
-        this.setState = () => { };
+//        this.setState = () => { };
     }
-
+    setState (state) {
+      this.state = state;
+    }
     setStateHandler(setState) {
         this.setState = setState;
     }
@@ -30,7 +32,8 @@ class Store {
         this.initialReducer.reduce(json, this.state);
         this.updateReducer.reduce(json, this.state);
 
-        this.setState(this.state);
+        this.setState(json);
+
     }
 }
 
