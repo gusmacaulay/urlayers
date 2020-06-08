@@ -95,8 +95,6 @@
   ++  on-watch
     |=  =path
     ^-  (quip card _this)
-    ~&  'the simplest on-watch'
-    ~&  path
     ?:  ?=([%http-response *] path)
       [~ this]
     ?.  =(/ path)
@@ -130,7 +128,6 @@
 ++  poke-json
   |=  jon=json
   ^-  (quip card _state)
-  ~&  'give it to me baby!'
   :-  [%give %fact ~[/urhack] %json !>(jon)]~
   %=  state
     data  jon
@@ -144,8 +141,6 @@
       [%'~urhack' %css %index ~]  (css-response:gen style)
       [%'~urhack' %js %tile ~]    (js-response:gen tile-js)
       [%'~urhack' %js %index ~]   (js-response:gen script)
-  ::    [%'~urhack' %data %geo ~] (en-json:html data.state)
-  ::
       [%'~urhack' %img @t *]
     =/  name=@t  i.t.t.site.url
     =/  img  (~(get by urhack-png) name)
