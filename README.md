@@ -3,6 +3,8 @@ urlayers
 
 urlayers is an openlayers integration and geojson datastore for urbit. Built with create-landscape-app.
 
+demo video - https://www.youtube.com/watch?v=AH1nI_OWaco
+
 <img src="/screens/urlayers.png" >
 
 ## Features
