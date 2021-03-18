@@ -6,7 +6,7 @@ class UrbitApi {
     this.bindPaths = [];
   }
 
-  bind(path, method, ship = this.authTokens.ship, appl = "landscapetest", success, fail) {
+  bind(path, method, ship = this.authTokens.ship, appl = "atlas", success, fail) {
     this.bindPaths = _.uniq([...this.bindPaths, path]);
 
     window.subscriptionId = window.urb.subscribe(ship, appl, path,
@@ -28,7 +28,7 @@ class UrbitApi {
   }
 
   landscapetest(data) {
-    this.action("landscapetest", "json", data);
+    this.action("atlas", "json", data);
   }
 
   action(appl, mark, data) {

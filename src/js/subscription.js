@@ -18,7 +18,7 @@ export class Subscription {
   //what does this do??
    initializelandscapetest() {
      console.log('initialising??');
-     api.bind('/', 'PUT', api.authTokens.ship, 'landscapetest',
+     api.bind('/', 'PUT', api.authTokens.ship, 'atlas',
        this.handleEvent.bind(this),
        this.handleError.bind(this));
    }
@@ -30,7 +30,7 @@ export class Subscription {
 
   handleError(err) {
     console.error(err);
-    api.bind('/', 'PUT', api.authTokens.ship, 'landscapetest',
+    api.bind('/', 'PUT', api.authTokens.ship, 'atlas',
       this.handleEvent.bind(this),
       this.handleError.bind(this));
   }

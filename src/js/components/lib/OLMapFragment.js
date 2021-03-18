@@ -94,19 +94,19 @@ class OLMapFragment extends React.Component {
 
         const drawMcdrawFace =  new Draw({
            source: source,
-           type: 'Polygon',
+           type: 'Point',
          });
          drawMcdrawFace.on('drawend', function (event) {
            console.log('draw state',window.store.state);
           var feature = event.feature;
-          var features = vector.getSource().getFeatures();
-          features = features.concat(feature);
-          features.forEach(function() {
+          //var features = vector.getSource().getFeatures();
+          //features = features.concat(feature);
+          //features.forEach(function() {
             var format = new GeoJSON();
-            var routeFeatures = format.writeFeatures(features);
-
-            api.action('landscapetest','json',routeFeatures);
-            });
+            var gj = format.writeFeatureObject(feature);
+            console.log(gj);
+            api.action('atlas','json',gj);
+          //  });
           });
 
         const map = new Map({

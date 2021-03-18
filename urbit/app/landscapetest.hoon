@@ -29,14 +29,15 @@
 ++  on-watch
   |=  =path
   ^-  (quip card _this)
-  ~&  'any on-watch '
-::  ?:  ?=([%http-response *] path)
-::    `this
-  ?.  =(/ path)
-    ~&  '/ on-watch path'
-    :_  this
-    [%give %fact ~ %json !>(data)]~
-  (on-watch:def path)
+  ::?.  =(/ path)
+  ~&  '/ on-watch'
+  ~&  (en-json:html data.state)
+  :_  this
+  [%give %fact ~ %json !>(data)]~
+  ::~&  'other on watch?'
+  ::[~ this]
+  ::(on-watch:def path)
+::
 ::
 ++  on-agent  on-agent:def
 ::
