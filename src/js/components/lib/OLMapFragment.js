@@ -144,6 +144,15 @@ class OLMapFragment extends React.Component {
         })
         map.once('rendercomplete', function(event) {
           let features = store.state;
+          //use airlock instead ??
+        //  const connection = await connect(
+        //    'zod',
+        //    'http://localhost',
+        //    8081,
+        //    'lidlut-tabwed-pillex-ridrup'
+        //  );
+        // const channel = new Channel(connection);
+          //
           console.log('pre render state', store.state);
           var format = new GeoJSON();
           var urFeatures = format.readFeatures(features);

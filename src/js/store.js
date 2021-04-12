@@ -21,7 +21,7 @@ class Store {
     setState (state) {
       this.state = state;
     }
-    
+
     setStateHandler(setState) {
         this.setState = setState;
     }
@@ -34,7 +34,7 @@ class Store {
         this.updateReducer.reduce(json, this.state);
 
         //this.setState(this.state);
-        //console.log("SET STATE JSON",json);
+        console.log("SET STATE JSON",json);
         this.setState(json);
     }
 }
