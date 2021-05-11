@@ -30,7 +30,7 @@
     "classnames": "^2.2.6",
     "fs-extra": "^8.1.0",
     "leaflet": "^1.6.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "moment": "^2.25.3",
     "mousetrap": "^1.6.5",
     "mv": "^2.1.1",
